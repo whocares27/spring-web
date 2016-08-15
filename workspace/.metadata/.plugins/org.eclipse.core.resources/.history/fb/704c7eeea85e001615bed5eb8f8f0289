@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+
+	<display-name>mvc-1</display-name>
+
+	<!-- TODO 01: Set-up web-app to use Spring MVC -->
+  
+	<!-- TODO 01a: Define a ContextLoaderListener as a listener element -->
+  
+	<!-- TODO 01b: Rename TODO-servlet.xml to your preference-->
+	<!-- TODO 01c: Declare the renamed servlet as a servlet here in the web.xml -->
+	<!-- TODO 01d: Declare the servlet-class as a DispatcherServlet -->
+  
+	<!-- TODO 01e: Map the servlet to the url '/' -->
+
+	<!--
+		When mapping DispatcherServlet to '/' be careful NOT to map it to '/*'.
+		Mapping it to '/*' will mean path info mapping. This means that ALL
+		requests being made to your web-app will be directed to your
+		DispatcherServlet. This includes /{context-root}/something.html,
+		/{context-root}/WEB-INF/views/something.jsp,
+		and /{context-root}/some-path.
+
+		When your controller selects a view that points to a *.jsp,
+		say '/{context-root}/WEB-INF/views/index.jsp', 
+		instead of allowing your servlet container to handle the request, your
+		DispatcherServlet jumps in and starts looking for a controller to
+		handle the request. It doesn't find any, and hence, you get a 404.
+		
+		So, map your DispatcherServlet to '/' instead.
+		
+		The above note DOES NOT apply when you map DispatcherServlet
+		to a non-root/non-default path, e.g. /admin/*. In which case, the
+		trailing '/*' (slash asterisk) would matter less, since your
+		JSP views are probably in a different path (e.g. /WEB-INF/views/*).
+
+		If you must map the DispatcherServlet to '/*', ensure that
+		you add the <mvc:default-servlet-hander /> element in your
+		MVC configuration. This allows the DispatcherServlet to
+		let the default servlet handle the request if it fails
+		to find a controller to handle the request.
+	-->
+
+</web-app>

@@ -1,0 +1,10 @@
+<%-- TODO 01: Factor out common layouts from JSPs (to create /WEB-INF/views/_layouts/standard.jsp) --%>
+<%-- TODO 01a: Factor out layout from this JSP (/WEB-INF/views/index.jsp) --%>
+<%@ include file="/WEB-INF/views/_taglibs.jspf"
+%>
+	<div class="container">
+		<div class="page-header">
+			<h1><fmt:message key="welcome.title" /></h1>
+		</div>
+		<p class="lead"><fmt:message key="welcome.caption" /></p>
+	</div>

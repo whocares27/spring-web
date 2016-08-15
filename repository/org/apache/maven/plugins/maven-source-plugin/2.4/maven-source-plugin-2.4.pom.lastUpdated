@@ -1,0 +1,7 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Tue Aug 09 10:55:14 CST 2016
+@default-snapshots-http\://10.10.3.110\:8081/artifactory/plugins-snapshot/.lastUpdated=1470711105930
+http\://10.10.3.110\:8081/artifactory/plugins-release/.error=Could not transfer artifact org.apache.maven.plugins\:maven-source-plugin\:pom\:2.4 from/to central (http\://10.10.3.110\:8081/artifactory/plugins-release)\: connect timed out
+https\://repo.maven.apache.org/maven2/.lastUpdated=1470711314585
+@default-central-http\://10.10.3.110\:8081/artifactory/plugins-release/.lastUpdated=1470711095913
+http\://10.10.3.110\:8081/artifactory/plugins-snapshot/.error=Could not transfer artifact org.apache.maven.plugins\:maven-source-plugin\:pom\:2.4 from/to snapshots (http\://10.10.3.110\:8081/artifactory/plugins-snapshot)\: connect timed out

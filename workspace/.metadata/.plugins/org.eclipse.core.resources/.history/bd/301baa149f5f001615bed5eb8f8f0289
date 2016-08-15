@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="rewards.web"/>
+
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />
+
+	<mvc:view-controller path="/" view-name="index" />
+	<mvc:resources mapping="/images/**" location="/images/" cache-period="3600" />
+	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
+	<mvc:default-servlet-handler />
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/messages/global" />
+	</bean>
+	
+	<mvc:tiles-configurer>
+		<mvc:definitions location="/WEB-INF/views/tiles.xml"/>
+		<mvc:definitions location="/WEB-INF/views/accounts/tiles.xml"/>
+	</mvc:tiles-configurer>
+	
+	<mvc:view-resolvers>
+		<mvc:content-negotiation use-not-acceptable="true" />
+		<mvc:bean-name />
+		<!-- This allows access to ${requestContext.theme.name} from a view -->
+		<bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
+			<property name="requestContextAttribute" value="requestContext" />
+		</bean>
+		<mvc:jsp prefix="/WEB-INF/views/" suffix=".jsp" />
+	</mvc:view-resolvers>
+
+	<bean id="contentNegotiationManager"
+			class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="mediaTypes">
+			<map>
+				<entry key="html" value="text/html" />
+				<entry key="xls" value="application/vnd.ms-excel" />
+				<entry key="xlsx" value="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+				<entry key="json" value="application/json" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- TODO 00: Run the web-app and see the links to change locale/language and theme -->
+	<!--
+	These links won't work yet, since there are no interceptors that detect changes to either
+	theme or locale/language. Go ahead, and proceed with 01a.
+	-->
+
+	<!-- Interceptors defined here will be applied to all handlers in the application -->
+	<mvc:interceptors>
+		<!-- This interceptor prevents caching -->
+		<bean class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+			<property name="cacheSeconds" value="0" />
+			<property name="supportedMethods">
+				<null />
+			</property>
+		</bean>
+		
+		<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			<property name="prefix" value="/WEB-INF/views/" />
+			<property name="suffix" value=".jsp" />
+			<property name="requestContextAttribute" value="requestContext" />
+		</bean>
+		
+		
+		<bean id="themeChangeInterceptor" class="org.springframework.web.servlet.theme.ThemeChangeInterceptor">
+    	<property name="paramName" value="theme" />
+		</bean>
+
+
+		
+		
+		<!-- TODO 01a: Add configuration for a ThemeChangeInterceptor -->
+		<!--
+		After adding a ThemeChangeInterceptor and redeploying your changes, try switching
+		to the "blue" theme. This time you will get an exception. Verify the exception
+		occurred because the new interceptor detected the theme and tried to store it
+		but failed to do so. This is because the default FixedThemeResolver *does not*
+		support storing and hence switching themes.
+		
+		Go ahead, and proceed to 01b to add a ThemeResolver that *supports* storing changes.
+		-->
+
+		<!-- TODO 02a: Add configuration for a LocaleChangeInterceptor -->
+		<!--
+		The configuration required for changing locales is very similar to themes.
+		Before starting out, open web.xml and verify the presence of the
+		CharacterEncodingFilter. This filter ensures the response is encoded as
+		UTF-8 enabling the display of international characters.
+		
+		
+		
+		Now proceed with adding a LocaleChangeInterceptor.
+		-->
+		<!--
+		When the changes have published, navigate to the home page and attempt to
+		change the locale by pressing the "Français" link. You will again see an
+		exception because the default AcceptHeaderLocaleResolver *does not* allow
+		storing locales other than the one that comes from the browser.
+
+		Go ahead, and proceed to 02b to add a LocaleResolver that *supports* storing changes.
+		-->
+	</mvc:interceptors>
+	
+	
+	
+	<bean id="themeResolver" class="org.springframework.web.servlet.theme.CookieThemeResolver">
+    	<property name="defaultThemeName" value="orange" />
+	</bean>	
+	
+	<!-- TODO 01b: Add configuration for a CookieThemeResolver -->
+	<!-- Set the default theme name to "orange" -->
+	<!--
+	When done, redeploy your changes, and try switching themes. You won't see much
+	visual changes, since we have *not* made our views use "theme" properties.
+	That's what you will do in the next step (01c).
+	-->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="en" />
+	</bean>
+	<!-- TODO 02b: Add configuration for a CookieLocaleResolver -->
+	<!-- Set the default locale to "en" -->
+	<!--
+	Remember that this bean must have a specific id for it to be discovered by the
+	DispatcherServlet. When the changes have published test the language link at
+	the top. You should be able to successfully switch between English and French.
+	
+	The I18N is made possible due to the presence of
+	/WEB-INF/messages/global*.properties. These have been provided for you.
+	-->
+
+</beans>

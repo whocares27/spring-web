@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<http pattern="/images/**" security="none" />
+	<http pattern="/webjars/**" security="none" />
+	<http pattern="/styles/**" security="none" />
+
+	<http auto-config="true" use-expressions="true">
+		<!-- (Begin) For exception handling only -->
+		<access-denied-handler error-page="/403" />
+		<!-- (End) For exception handling only -->
+
+		<intercept-url pattern="/login*" access="isAnonymous()" />
+		<intercept-url pattern="/accounts/**" access="hasRole('ROLE_ADMIN')" method="POST" />
+		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+		<form-login login-page="/login"
+			authentication-failure-url="/login?error"
+			default-target-url="/" 
+			login-processing-url="/login"
+			username-parameter="username"
+			password-parameter="password" />
+		<csrf disabled="true"/>
+	</http>
+
+	<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="joe" password="spring" authorities="ROLE_USER"/>
+				<user name="admin" password="spring" authorities="ROLE_USER, ROLE_ADMIN"/>
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+
+</beans:beans>

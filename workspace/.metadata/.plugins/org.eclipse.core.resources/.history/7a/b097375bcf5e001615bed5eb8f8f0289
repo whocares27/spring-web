@@ -1,0 +1,9 @@
+<%-- TODO 01c: Factor our layout from this JSP (/WEB-INF/views/accounts/show.jsp)
+
+The factored out HTML should be placed in /WEB-INF/_layouts/standard.jsp.
+Only the view-specific contents should be left in this JSP.
+
+--%>
+<%@ include file="/WEB-INF/views/_taglibs.jspf"
+%>
+

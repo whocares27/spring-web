@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="rewards.web"/>
+
+	<mvc:annotation-driven />
+
+	<mvc:view-controller path="/" view-name="index" />
+	<mvc:resources mapping="/images/**" location="/images/" cache-period="3600" />
+	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
+	<mvc:default-servlet-handler />
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/messages/global" />
+	</bean>
+	
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/views/tiles.xml</value>
+				<value>/WEB-INF/views/accounts/tiles.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- TODO 01b: Configure an AccountsXlsxView as a view -->
+	
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="1" />
+	</bean>
+	<bean name="accounts/list" class="rewards.web.AccountsXlsxView" />
+	
+	<!-- TODO 01c: Configure your view resolver chain to include AccountsXlsxView  -->
+	
+
+	<!--
+	This involves a BeanNameViewResolver, a TilesViewResolver, and other view resolvers.
+	Name your AccountsXlsxView bean "accounts/list". That way, the BeanNameViewResolver
+	will match with the logical view name "accounts/list".
+	-->
+
+	<!-- TODO 01d: Run the web-app and see what you get with the URL "/accounts.xlsx". -->
+	<!-- 
+	If your computer has a program for displaying Excel documents you will be able to
+	open the document. If not, you will be prompted to save the document to a file on
+	the local disk.
+	
+	Even when there is no .xlsx extension in the URL, you may still end up using the
+	AccountsXlsxView. This because you probably had to configure the BeanNameViewResolver
+	first in the order of priority, so it always does the rendering. What you really want
+	is the ability to alternate based on the file extension in the URL. Proceed to the
+	next step to do this.
+	-->
+
+	<bean id="tilesViewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver"
+		p:order="2"
+		p:contentType="text/html" />
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:prefix="/WEB-INF/views/"
+		p:suffix=".jsp" />
+
+	<!-- TODO 01e: Configure the ContentNegotiatingViewResolver (CNVR) -->
+	<!-- 
+	Also, as of Spring 3.0.2, you can also set the CNVR property "useNotAcceptableStatusCode"
+	to true. This will result in an HTTP response with a status code 406 if no view is
+	found in which case the application can be configured to handle it appropriately.
+	-->
+	
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	<!-- All configuration is now done by the manager - since Spring V3.2 -->
+	<property name="contentNegotiationManager" ref="cnManager"/>
+	</bean>
+	
+	<mvc:annotation-driven content-negotiation-manager="cnManager" />
+	<bean id="cnManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+	<property name="ignoreAcceptHeader" value="true"/>
+	<property name="defaultContentType" value="text/html" />
+	</bean>
+		
+
+	<!-- TODO 01f: (BONUS) Support both .xls (Excel 97-2003) and .xlsx (Office 2007) formats -->
+
+	<!-- TODO 02: Return accounts as JSON -->
+	<!-- Use the JsonViewResolver that has already been provided to you. Configure it in your CNVR. -->
+	
+	<bean class="rewards.web.JsonViewResolver" />
+	
+	<!--
+	When viewing accounts as JSON, you may get an exception with the message
+	"failed to lazily initialize a collection of role: rewards.domain.model.Account.cards",
+	no session or session was closed". You should also find a Hibernate
+	LazyInitializationException exception in the stack-trace. Do you know why this is happening?
+	
+	Hibernate (the JPA provider used in all the exercises) uses a technique called
+	lazy-loading which is essentially "fetch on demand". When the accounts were fetched,
+	their cards were not. When we listed the accounts in an HTML page, we didn't use the
+	card information, so it didn't matter. When we try to convert the list of accounts to
+	JSON, the Jackson mapper does a deep conversion, trying to convert all the cards of each
+	account to JSON too. Unfortunately they are not there.
+
+	Normally this doesn't matter. Hibernate replaces all references to related data
+	(including collections of references) by a proxy. When you try to access the data for the
+	first time, the proxy goes to the Hibernate session and asks it to load the related data.
+	However if there is no session because the transaction has finished, a lazy-loading error
+	occurs. Since most data is fetched via a transactional service (in our case the
+	RewardsApplicationService), lazy-loading errors most commonly occur in the view-layer.
+	
+	To fix this problem quickly, we are going to tell the RewardsApplicationService to also
+	fetch the cards when it fetches the accounts.
+	-->
+	<!-- TODO 02a: Enhance controller to have cards fetched when JSON is requested -->
+	<!--
+	The #findAllAccounts() method in RewardsApplicationService accepts a boolean
+	argument that indicates whether cards are to be fetched or not.
+	-->
+
+</beans>

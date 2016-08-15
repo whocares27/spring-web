@@ -1,0 +1,13 @@
+package rewards.web;
+
+public class XmlMarshallingViewResolver implements ViewResolver {
+private Marshaller marshaller;
+@Autowired
+public XmlMarshallingViewResolver(Marshaller marshaller) {
+this.marshaller = marshaller;
+}
+@Override
+public View resolveViewName(String viewName, Locale locale) {
+return new MarshallingView(marshaller);
+}
+}

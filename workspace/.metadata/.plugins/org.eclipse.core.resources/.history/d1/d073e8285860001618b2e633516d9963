@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	
+	<!-- TODO 02: Configure The Spring Security Filter Chain -->
+	<!--
+	Insert a new line somewhere between the opening and the closing <beans:beans> root element
+	and press Ctrl+Space. STS has knowledge of the Spring Security namespace and will offer
+	typing suggestions. Begin typing or scroll down to the <http> element and select it.
+	The <http> element has an attribute called auto-config. Use Ctrl+Space to add this
+	attribute and set its value to 'true'. Also, turn on support for Spring Security SpEL
+	expressions by adding the attribute use-expressions="true".
+	
+	After you save your changes restart the server. Once server startup is complete,
+	you will still get a 404, but there will be a new error in the console.
+	-->
+	<http auto-config="true" use-expressions="true">
+		<intercept-url pattern="/login*" access="isAnonymous()" />
+		<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/images/**" access="isAnonymous()"/>
+		<intercept-url pattern="/styles/**" access="isAnonymous()"/>
+		<intercept-url pattern="/webjars/**" access="isAnonymous()"/>
+		
+		
+
+		
+		<form-login login-page="/login" />
+	</http>
+
+	<!-- 
+	This exception is coming when Spring tries to set up Spring Security. It's telling
+	us we need to provide an Authentication Manager (the source of user information).
+	Proceed to the next step (03) to do so.
+	-->
+
+	<!-- TODO 03: Configure an In-Memory User Details Service -->
+	<!--
+	Use Ctrl+Space to add <authentication-manager>, <authentication-provider>, and
+	<user-service> elements all nested within each other. Within <user-service> insert
+	a <user> element setting its user name to 'joe', the password to 'spring', and the
+	authorities to 'ROLE_USER'. You now have a declared a simple in-memory user service
+	with a single user.
+	-->
+	<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="joe" password="spring" authorities="ROLE_USER"/>
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+
+	<!--
+	After the server has restarted, verify that application pages are displayed correctly.
+	They are protected with Spring Security's chain of filters, but we have not yet
+	defined any specific URL patterns that need to be protected.
+	-->
+
+	<!-- TODO 04: Specify URL Patterns To Protect -->
+	<!--
+	Find the <http auto-config="true" use-expressions="true"> element and insert a
+	<intercept-url> element inside of it. Set the pattern attribute of this element
+	to "/**" and the access attribute to hasRole('ROLE_USER'). This indicates that
+	every URL of the application now requires the specified role.
+
+	Restart the server and try to access the application pages.
+	-->
+
+	<!--
+	You should see the *default* Spring Security Login page. Use it to login.
+	Refer to previous steps where you created a user and initialized its password.
+	This works but what you'll probably want to do is provide Spring Security
+	with your own login page that looks a little more like the rest of your application.
+	-->
+
+	<!-- TODO 05: Configure Form-Based Login -->
+	<!--
+	Open /WEB-INF/views/login.jsp and review its contents.
+	-->
+
+	<!--
+	Find the <http auto-config="true" use-expressions="true"> element and insert
+	another line with the <form-login> element (right below the <intercept-url>)
+	and set its login-page attribute to /login.
+	
+	Restart the server. What do you see?
+	-->
+
+	<!--
+	When Spring Security logged you in previously, it added a cookie to your
+	session with your login information. Even if you restart the server, this will
+	retain your credentials, preventing the login page from being displayed.
+	Make sure you clear this cookie out of your session.
+	
+	If you're using Chrome (or some other browser) you will likely see that
+	the page cannot be displayed due to some "redirect loop" error.
+	
+	The problem is that we've protected all pages that match "/**" - that includes
+	the login page too. Now that we've provided Spring Security with a login page,
+	each time Spring Security tries to go there it fails because it's protected,
+	and redirects to the login page so the user can authenticate. The result is a
+	loop that doesn't end.
+
+	To fix this add another URL pattern that looks like this:
+	
+	<intercept-url pattern="/login*" access="isAnonymous()" />
+	
+	"isAnonymous()" is a Spring Security SpEL expression identifying anonymous
+	users. If you recall one of the default services in the Spring Security filter
+	chain assigns an anonymous identity to incoming requests if they are not yet
+	authenticated.
+
+	If you still get the "Redirect Loop" message, remember that intercept-urls
+	are matched in the order listed. If /** is first, it will match all URLs,
+	regardless of whether other matches exist.
+	-->
+
+	<!--
+	Spring Security redirects the browser to the "/login" URL. But since we have
+	not mapped any handler/view to it, it results to a page not found error (404).
+	Go ahead, and modify your MVC configuration and add a handler for "/login"
+	that renders the "/WEB-INF/views/login.jsp" view. Study the configuration
+	and see that you're using the right view name given the configured "ViewResolver"s.
+	-->
+
+	<!--
+	Restart the server and access the welcome page. This time the login page should
+	appear although it won't be appear to be properly styled.
+	
+	Perhaps you've guessed the problem. You need to allow access to static resources.
+	Modify the security configuration and add additional <http> elements to allow
+	the following URLs *without* any security checks.
+	- /images/**
+	- /styles/**
+	- /webjars/**
+	
+	Try out your changes. You should see a properly styled login page that allows
+	you to enter and use the application.
+	-->
+
+	<!-- TODO 06: Logging out -->
+	<!--
+	By default, the logout URL is "/logout". Try it.
+	-->
+	
+	<!-- TODO 07: Add User With Admin Role -->
+	<!-- Use "admin" as user name and "spring" as password -->
+
+	<!-- TODO 08: Protect POST /accounts/* with "hasRole('ROLE_ADMIN')" -->
+	
+	<!--
+	Try to login as the user "joe". You should be able to browse the application,
+	but will get a 403 (Access Denied) error if you try to save account changes.
+	That's because those operations require ROLE_ADMIN. Now try logging in as "admin".
+	This time you'll see a 403 error when accessing the home page. That's because
+	"/**" is protected with ROLE_USER. Tweak the intercept URL patterns. You're done
+	when users with "ROLE_ADMIN" can browse and edit everything. Users with "ROLE_USER"
+	can browse but not edit anything.
+	-->
+	
+	<!-- TODO 09: Use Spring Security Tags For Conditional JSP Page Rendering -->
+	
+	<!--
+	You've probably noticed that even as a regular user you can still get to the
+	Edit Account page. There is no harm in that but it would be better if the
+	Edit link was indeed hidden.
+	
+	Open accounts/show.jsp and accounts/list.jsp. Find the Edit link and surround
+	it with a <security:authorize> element. Set its access attribute to
+	"hasRole('ROLE_ADMIN')". Now this link will only be rendered for admin users.
+	Go to the Edit Account page as a regular user (or refresh it if already there).
+	This time you should not see the link.
+	-->
+
+</beans:beans>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<modules>
+  <module moduleId="org.eclipse.jst.jee.server:mvc-view" serverId="Pivotal tc Server Developer Edition v3.1"/>
+  <module moduleId="org.eclipse.jst.jee.server:mvc-layout" serverId="Pivotal tc Server Developer Edition v3.1"/>
+  <module moduleId="org.eclipse.jst.jee.server:mvc-form" serverId="Pivotal tc Server Developer Edition v3.1"/>
+  <module moduleId="org.eclipse.jst.jee.server:mvc-personalization" serverId="Pivotal tc Server Developer Edition v3.1"/>
+  <module moduleId="org.eclipse.jst.jee.server:mvc-1" serverId="Pivotal tc Server Developer Edition v3.1"/>
+  <module moduleId="org.eclipse.jst.jee.server:mvc-security" serverId="Pivotal tc Server Developer Edition v3.1"/>
+  <module moduleId="org.eclipse.jst.jee.server:mvc-ajax" serverId="Pivotal tc Server Developer Edition v3.1"/>
+</modules>

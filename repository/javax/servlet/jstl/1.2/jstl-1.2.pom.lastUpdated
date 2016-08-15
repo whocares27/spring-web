@@ -1,0 +1,7 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Tue Aug 09 10:57:34 CST 2016
+https\://repo.maven.apache.org/maven2/.lastUpdated=1470711454562
+http\://10.10.3.110\:8081/artifactory/libs-release/.error=Could not transfer artifact javax.servlet\:jstl\:pom\:1.2 from/to central (http\://10.10.3.110\:8081/artifactory/libs-release)\: The operation was cancelled.
+@default-snapshots-http\://10.10.3.110\:8081/artifactory/libs-snapshot/.lastUpdated=1470711236443
+http\://10.10.3.110\:8081/artifactory/libs-snapshot/.error=Could not transfer artifact javax.servlet\:jstl\:pom\:1.2 from/to snapshots (http\://10.10.3.110\:8081/artifactory/libs-snapshot)\: The operation was cancelled.
+@default-central-http\://10.10.3.110\:8081/artifactory/libs-release/.lastUpdated=1470711236437

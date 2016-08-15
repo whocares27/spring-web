@@ -1,0 +1,16 @@
+package rewards.web;
+
+public class WebInitializer extends AbstractDispatcherServletInitializer {
+@Override
+protected WebApplicationContext createRootApplicationContext() {
+return ...; // or null if there's none
+}
+@Override
+protected WebApplicationContext createServletApplicationContext() {
+return ...; // mostly controllers, custom views, etc.
+}
+@Override
+protected String[] getServletMappings() {
+return new String[] { "/" };
+}
+}

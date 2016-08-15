@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="rewards.web"/>
+
+	<mvc:annotation-driven />
+	
+	<mvc:resources mapping="/images/**" location="/images/" />
+	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
+
+	<!-- TODO 02e: Configure messages by adding a ReloadableResourceBundleMessageSource bean
+		with an ID of messageSource -->
+	<!-- /WEB-INF/messages/global.properties has been prepared for you -->
+	
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	<property name="cacheSeconds" value="1"/>
+	</bean>
+	<context:property-placeholder location="/WEB-INF/messages/global.properties" />
+
+	<!-- TODO 02f3: Configure an InternalResourceViewResolver bean -->
+	<!-- Specify the prefix as /WEB-INF/views -->
+	<!-- Specify the suffix as .jsp -->
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<property name="prefix" value="/WEB-INF/views/" />
+	<property name="suffix" value=".jsp" />
+	</bean>
+
+</beans>

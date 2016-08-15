@@ -1,0 +1,24 @@
+package rewards.web;
+
+import java.util.Locale;
+
+import javax.xml.bind.Marshaller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.view.xml.MarshallingView;
+
+
+public class XmlMarshallingViewResolver implements ViewResolver {
+	private Marshaller marshaller;
+	
+	@Autowired
+	public XmlMarshallingViewResolver(Marshaller marshaller) {
+		this.marshaller = marshaller;
+	}
+	@Override
+	public View resolveViewName(String viewName, Locale locale) {
+		return new MarshallingView();
+	}
+}

@@ -1,0 +1,8 @@
+package rewards.web;
+
+public class JsonViewResolver implements ViewResolver {
+@Override
+public View resolveViewName(String viewName, Locale locale) {
+return new MappingJackson2JsonView();
+}
+}

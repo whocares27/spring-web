@@ -1,0 +1,5 @@
+package rewards.web;
+
+public class JsonViewResolver {
+
+}

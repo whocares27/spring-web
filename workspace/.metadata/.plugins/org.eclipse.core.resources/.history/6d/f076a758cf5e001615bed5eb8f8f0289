@@ -1,0 +1,28 @@
+<%-- TODO 01c: Factor our layout from this JSP (/WEB-INF/views/accounts/show.jsp)
+
+The factored out HTML should be placed in /WEB-INF/_layouts/standard.jsp.
+Only the view-specific contents should be left in this JSP.
+
+--%>
+<%@ include file="/WEB-INF/views/_taglibs.jspf"
+%>
+
+<nav class="navbar navbar-default navbar-static-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">RewardsOnline</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="<c:url value="/accounts" />"><fmt:message key="navigate.accounts" /></a></li>
+				</ul>
+				<!-- ul class="nav navbar-nav navbar-right"></ul -->
+			</div><!--/.nav-collapse -->
+		</div>
+	</nav>

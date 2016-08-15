@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+
+	<display-name>mvc-1</display-name>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:rewards/app-config.xml
+			classpath:rewards/test-database-config.xml
+			/WEB-INF/security-config.xml
+		</param-value>
+	</context-param>
+	
+	<filter>
+		<filter-name>characterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>characterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- TODO 01: Declare the DelegatingFilterProxy -->
+	<!--
+	TODO 01a: Add a new filter of type org.springframework.web.filter.DelegatingFilterProxy
+		and name it "springSecurityFilterChain".	
+	-->
+	
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>
+		org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- TODO 01b: Map this filter to all incoming requests using the /* pattern -->
+
+	<!-- 
+	The DelegatingFilterProxy works by delegating to a Spring-managed bean that implements the
+	Filter interface. The filter name *should* match the bean name in the Spring application
+	context. All calls to the filter proxy will then be delegated to that bean in the Spring context.
+	-->
+	<!-- TODO 01c: Run the web app and see what happens. -->
+	<!--
+	If you try to access any application pages, you'll see a 404 error. That's because the filter
+	is deployed, but fails to find a bean named "springSecurityFilterChain" in the context. Proceed
+	to the next step (02) to configure this bean.
+	-->
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>mvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+  
+	<servlet-mapping>
+		<servlet-name>mvc</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+</web-app>

@@ -1,0 +1,36 @@
+package rewards.web;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import rewards.application.RewardsApplicationService;
+
+// TODO 03: Implement account listing page
+// TODO 03a: Annotate the class to be a controller in Spring MVC
+@Controller
+public class AccountsController {
+
+	private RewardsApplicationService rewardsApplicationService;
+
+	@Autowired
+	public AccountsController(RewardsApplicationService rewardsApplicationService) {
+		this.rewardsApplicationService = rewardsApplicationService;
+	}
+
+	// TODO 03b: Define method that maps to GET "/accounts"
+	// TODO 03c: Delegate to a RewardsApplicationService to find the list of accounts
+	// Prepare the model attributes to be used by the view.
+	// TODO 03d: Use the "list" view to render list of accounts
+	// The JSP view /WEB-INF/views/accounts/list.jsp has already been created for you.
+	// TODO 03e: Run the web-app and see if accounts listing displays correctly
+
+	// TODO 04 Implement account details page
+	// TODO 04a: Define method that maps to GET "/accounts/{accountNumber}"
+	// The {accountNumber} is a path variable.
+	// TODO 04b: Delegate to a RewardsApplicationService to find the account
+	// Prepare the model attributes to be used by the view.
+	// TODO 04c: Use the "show" view to render list of accounts
+	// The JSP view /WEB-INF/views/accounts/show.jsp has already been created for you.
+	// TODO 04d: Run the web-app and click on a specific account on the accounts listing page
+
+}

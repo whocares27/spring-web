@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- TODO 00: Run this webapp and see that everything is in order. -->
+
+	<context:component-scan base-package="rewards.web"/>
+
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />
+
+	<mvc:view-controller path="/" view-name="index" />
+
+	<mvc:resources mapping="/images/**" location="/images/" cache-period="3600" />
+	<!-- TODO 01a: Study this portion of the configuration -->
+	<!--
+	The JavaScript file is added to the project as a *dependency* rather than just
+	another file under the src/main/webapp folder. Take a look at the dependencies.
+	In the "Package Explorer" view, expand "Referenced Libraries" to see the project's
+	dependencies (JARs). Go to jquery-x.x.x.jar. Expand it to see its contents.
+	Notice where the JavaScript files are located within the JAR. This is accessible
+	via the classpath.
+
+	This is a better approach when having 3rd-party JavaScript libraries as a
+	*dependency*, since it allows for better version management, and avoids any
+	undesired changes to the 3rd-party files.
+	
+	For this to work, we need to map incoming URLs (e.g. /_resources/jquery
+
+	This maps /webjars/** to WebJars (e.g. /webjars/jquery/2.*.*/jquery.min.js).
+	-->
+	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" cache-period="3600" />
+
+	<mvc:default-servlet-handler />
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/messages/global" />
+	</bean>
+
+	<mvc:tiles-configurer>
+		<mvc:definitions location="/WEB-INF/views/tiles.xml"/>
+		<mvc:definitions location="/WEB-INF/views/accounts/tiles.xml"/>
+	</mvc:tiles-configurer>
+	
+	<!-- TODO 02: Enable use of MappingJackson2JsonView (as a view) -->
+	<!-- You'll need a ViewResolver for this. Look at JsonViewResolver from a previous exercise. -->
+	<mvc:view-resolvers>
+		<mvc:content-negotiation use-not-acceptable="true" />
+		<mvc:bean-name />
+		<!-- This allows access to ${requestContext.theme.name} from a view -->
+		<bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
+			<property name="requestContextAttribute" value="requestContext" />
+		</bean>
+		<mvc:jsp prefix="/WEB-INF/views/" suffix=".jsp" />
+	</mvc:view-resolvers>
+	
+	<bean id="contentNegotiationManager"
+			class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="mediaTypes">
+			<map>
+				<entry key="html" value="text/html" />
+				<entry key="xls" value="application/vnd.ms-excel" />
+				<entry key="xlsx" value="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+				<entry key="json" value="application/json" />
+			</map>
+		</property>
+	</bean>
+
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+			<property name="cacheSeconds" value="0" />
+			<property name="supportedMethods">
+				<null />
+			</property>
+		</bean>
+		<bean class="org.springframework.web.servlet.theme.ThemeChangeInterceptor" />
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+	</mvc:interceptors>
+
+	<bean id="themeResolver" class="org.springframework.web.servlet.theme.CookieThemeResolver">
+		<property name="defaultThemeName" value="orange" />
+		<property name="cookieMaxAge" value="3600" />
+	</bean>
+
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="en" />
+		<property name="cookieMaxAge" value="3600" />
+	</bean>
+
+</beans>

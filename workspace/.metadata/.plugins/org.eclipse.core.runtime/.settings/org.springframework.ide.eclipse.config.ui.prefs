@@ -1,0 +1,12 @@
+//com.springsource.config.ui.prefs.activePageIndex\:/mvc-1/src/main/webapp/WEB-INF/TODO-servlet.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
+//com.springsource.config.ui.prefs.activePageIndex\:/mvc-1/src/main/webapp/WEB-INF/app-servlet.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
+//com.springsource.config.ui.prefs.activePageIndex\:/mvc-ajax/src/main/webapp/WEB-INF/mvc-servlet.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
+//com.springsource.config.ui.prefs.activePageIndex\:/mvc-form/src/main/webapp/WEB-INF/mvc-servlet.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
+//com.springsource.config.ui.prefs.activePageIndex\:/mvc-layout/src/main/webapp/WEB-INF/mvc-servlet.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
+//com.springsource.config.ui.prefs.activePageIndex\:/mvc-personalization/src/main/webapp/WEB-INF/mvc-servlet.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
+//com.springsource.config.ui.prefs.activePageIndex\:/mvc-security/src/main/webapp/WEB-INF/mvc-servlet.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
+//com.springsource.config.ui.prefs.activePageIndex\:/mvc-security/src/main/webapp/WEB-INF/security-config.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
+//com.springsource.config.ui.prefs.activePageIndex\:/mvc-view/src/main/webapp/WEB-INF/mvc-servlet.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
+//com.springsource.config.ui.prefs.activePageIndex\:/rest-ws/src/main/resources/rewards/app-config.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
+//com.springsource.config.ui.prefs.activePageIndex\:/rest-ws/src/main/webapp/WEB-INF/mvc-servlet.xml=<?xml version\="1.0" encoding\="UTF-8"?>\n<activePage index\="0"/>
+eclipse.preferences.version=1
